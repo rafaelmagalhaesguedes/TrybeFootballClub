@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import SequelizeTeam from '../database/models/SequelizeTeam';
-import { teams } from './mocks/team.mocks';
+import { team, teams } from './mocks/team.mocks';
 
 chai.use(chaiHttp);
 
@@ -33,7 +33,6 @@ describe('Teams test', () => {
   describe('2. Get Team by id', () => {
     it('should return a team by id', async function() {
       // arrange
-      const team = teams[0];
       sinon.stub(SequelizeTeam, 'findByPk').resolves(team as any);
 
       // act
