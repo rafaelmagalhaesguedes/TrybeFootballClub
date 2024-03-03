@@ -14,7 +14,7 @@ export default {
         allowNull: false,
         field: 'home_team_id',
         references: {
-          model: 'teams', // Nome da tabela referenciada
+          model: 'teams',
           key: 'id',
         },
       },
@@ -28,7 +28,7 @@ export default {
         allowNull: false,
         field: 'away_team_id',
         references: {
-          model: 'teams', // Nome da tabela referenciada
+          model: 'teams',
           key: 'id',
         },
       },
