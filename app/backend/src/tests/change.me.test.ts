@@ -16,7 +16,7 @@ describe('Teams test', () => {
     sinon.restore();
   });
 
-  describe('1. Get All teams', () => {
+  describe('1. Integration tests', () => {
     it('should return all teams', async function() {
       // arrange
       sinon.stub(SequelizeTeam, 'findAll').resolves(teams as any);
@@ -28,9 +28,7 @@ describe('Teams test', () => {
       expect(status).to.equal(200);
       expect(body).to.deep.equal(teams);
     });
-  });
 
-  describe('2. Get Team by id', () => {
     it('should return a team by id', async function() {
       // arrange
       sinon.stub(SequelizeTeam, 'findByPk').resolves(team as any);
