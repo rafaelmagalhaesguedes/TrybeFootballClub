@@ -1,8 +1,8 @@
 import { QueryInterface, DataTypes } from 'sequelize';
 
 export default {
-  up: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.createTable('matches', {
+  up(queryInterface: QueryInterface) {
+    return queryInterface.createTable('matches', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -45,7 +45,7 @@ export default {
     });
   },
 
-  down: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.dropTable('matches');
+  down(queryInterface: QueryInterface) {
+    return queryInterface.dropTable('matches');
   }
 };
