@@ -3,25 +3,30 @@ import * as bcript from 'bcryptjs';
 import JwtService from '../utils/JwtService';
 import UserModel from '../models/UserModel';
 import IUserModel from '../Interfaces/User/IUserModel';
-import { ServiceResponse } from '../Interfaces/ServiceResponse';
-import IUser from '../Interfaces/User/IUser';
 
 export default class LoginService {
   //
-  private static errorMessage = 'Invalid email or password';
+  private errorMessage = 'Invalid email or password';
 
   constructor(private userModel: IUserModel = new UserModel()) { }
 
-  async sign(email: string, password: string): Promise<ServiceResponse<IUser | string>> {
+  async sign(email: string, password: string) {
     const user = await this.userModel.findUserByEmail(email);
-    if (!user) return { status: 'UNAUTHORIZED', data: { message: LoginService.errorMessage } };
+    if (!user) return { status: 'UNAUTHORIZED', data: { message: this.errorMessage } };
 
     if (!bcript.compareSync(password, user.password)) {
-      return { status: 'UNAUTHORIZED', data: { message: LoginService.errorMessage } };
+      return { status: 'UNAUTHORIZED', data: { message: this.errorMessage } };
     }
 
-    const token = JwtService.createToken({ email: user.email, role: user.role });
+    const token = JwtService.createToken({ id: user.id, email: user.email });
 
-    return { status: 'SUCCESSFUL', data: token };
+    return { status: 'SUCCESSFUL', data: { token } };
+  }
+
+  async getRole(email: string) {
+    const user = await this.userModel.findUserByEmail(email);
+    if (!user) return { status: 'UNAUTHORIZED', data: { message: this.errorMessage } };
+
+    return { status: 'SUCCESSFUL', data: { role: user.role } };
   }
 }

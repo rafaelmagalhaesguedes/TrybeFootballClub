@@ -10,6 +10,12 @@ export default class LoginController {
   async signUp(req: Request, res: Response) {
     const { email, password } = req.body;
     const { status, data } = await this.loginService.sign(email, password);
-    res.status(statusCode(status)).json(data);
+    return res.status(statusCode(status)).json(data);
+  }
+
+  async getUserRole(_req: Request, res: Response) {
+    const { email } = res.locals.user;
+    const { status, data } = await this.loginService.getRole(email);
+    return res.status(statusCode(status)).json(data);
   }
 }
