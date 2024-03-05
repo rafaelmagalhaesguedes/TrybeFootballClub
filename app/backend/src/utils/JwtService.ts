@@ -1,21 +1,20 @@
 import * as jwt from 'jsonwebtoken';
 
+type Payload = { id: number; email: string };
+
 export default class JwtService {
   //
   private static jwtSecret = process.env.JWT_SECRET || 'secretKey';
 
-  static createToken({ email, role }: { email: string; role: string }) {
-    const jwtConfig: jwt.SignOptions = {
-      expiresIn: '1h',
-      algorithm: 'HS256',
-    };
-
-    const token = jwt.sign({ email, role }, JwtService.jwtSecret, jwtConfig);
-
-    return token;
+  static createToken(payload: Payload) {
+    return jwt.sign(payload, this.jwtSecret, { expiresIn: '3h', algorithm: 'HS256' });
   }
 
-  static verify(token: string) {
-    return jwt.verify(token, JwtService.jwtSecret);
+  static verifyToken(token: string) {
+    return jwt.verify(token, this.jwtSecret) as Payload;
+  }
+
+  static splitToken(authorization: string) {
+    return authorization.split(' ')[1];
   }
 }
