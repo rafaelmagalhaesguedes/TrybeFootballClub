@@ -1,20 +1,20 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import JwtService from '../utils/JwtService';
 
-export default class AuthMiddleware {
-  static authenticate(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization;
+const errorMessage = 'Token must be a valid token';
 
-    if (!token) {
-      return res.status(401).json({ error: { message: 'Token not found' } });
-    }
+export default function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+  //
+  const { authorization } = req.headers;
+  if (!authorization) return res.status(401).json({ message: 'Token not found' });
 
-    try {
-      const user = JwtService.verify(token);
-      req.body.user = { user };
-      next();
-    } catch (error) {
-      return res.status(401).json({ error: { message: 'Expired or invalid token' } });
-    }
-  }
+  const token = JwtService.splitToken(authorization);
+  if (!token) return res.status(401).json({ message: errorMessage });
+
+  const payload = JwtService.verifyToken(token);
+  if (!payload) return res.status(401).json({ message: errorMessage });
+
+  res.locals.user = payload;
+
+  next();
 }
