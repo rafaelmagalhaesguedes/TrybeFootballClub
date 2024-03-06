@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Login test', () => {
+describe('Login tests', () => {
   afterEach(() => {
     sinon.restore();
   });
