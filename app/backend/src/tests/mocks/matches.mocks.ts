@@ -1,9 +1,9 @@
 export const matchesMock = [{
   id: 1,
   homeTeamId: 16,
-  homeTeamGoals: 1,
-  awayTeamId: 8,
-  awayTeamGoals: 1,
+  homeTeamGoals: 6, // 6
+  awayTeamId: 8,    // x
+  awayTeamGoals: 1, // 1
   inProgress: false,
   homeTeam: {
     teamName: "Cruzeiro" // O maior de Minas
