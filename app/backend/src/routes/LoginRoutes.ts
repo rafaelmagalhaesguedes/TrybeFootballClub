@@ -1,25 +1,31 @@
-//
 import { Request, Router, Response } from 'express';
 import LoginController from '../controllers/LoginController';
 import LoginMiddleware from '../middlewares/loginMiddleware';
 import Authenticate from '../middlewares/authMiddleware';
 
-const userController = new LoginController();
+export default class LoginRoutes {
+  public router: Router;
+  private userController: LoginController;
 
-const router = Router();
+  constructor() {
+    this.router = Router();
+    this.userController = new LoginController();
+    this.initializeRoutes();
+  }
 
-// Sign up
-router.post(
-  '/',
-  LoginMiddleware.validateLogin,
-  (req: Request, res: Response) => userController.signUp(req, res),
-);
+  private initializeRoutes() {
+    // Sign up
+    this.router.post(
+      '/',
+      LoginMiddleware,
+      (req: Request, res: Response) => this.userController.signUp(req, res),
+    );
 
-// Get role
-router.get(
-  '/role',
-  Authenticate,
-  (req: Request, res: Response) => userController.getUserRole(req, res),
-);
-
-export default router;
+    // Get role
+    this.router.get(
+      '/role',
+      Authenticate,
+      (req: Request, res: Response) => this.userController.getUserRole(req, res),
+    );
+  }
+}

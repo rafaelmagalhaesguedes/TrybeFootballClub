@@ -1,11 +1,17 @@
-//
 import { Router } from 'express';
-import teamRouter from './TeamRoutes';
-import loginRouter from './LoginRoutes';
+import TeamRoutes from './TeamRoutes';
+import LoginRoutes from './LoginRoutes';
 
-const router = Router();
+export default class MainRoutes {
+  public router: Router;
 
-router.use('/teams', teamRouter);
-router.use('/login', loginRouter);
+  constructor() {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-export default router;
+  private initializeRoutes() {
+    this.router.use('/teams', new TeamRoutes().router);
+    this.router.use('/login', new LoginRoutes().router);
+  }
+}

@@ -1,15 +1,27 @@
-//
 import { Request, Router, Response } from 'express';
 import TeamController from '../controllers/TeamController';
 
-const teamController = new TeamController();
+export default class TeamRoutes {
+  public router: Router;
+  private teamController: TeamController;
 
-const router = Router();
+  constructor() {
+    this.router = Router();
+    this.teamController = new TeamController();
+    this.initializeRoutes();
+  }
 
-// Get all teams
-router.get('/', (req: Request, res: Response) => teamController.getAllTeams(req, res));
+  private initializeRoutes() {
+    // Get all teams
+    this.router.get(
+      '/',
+      (req: Request, res: Response) => this.teamController.getAllTeams(req, res),
+    );
 
-// Get team by id
-router.get('/:id', (req: Request, res: Response) => teamController.getTeamById(req, res));
-
-export default router;
+    // Get team by id
+    this.router.get(
+      '/:id',
+      (req: Request, res: Response) => this.teamController.getTeamById(req, res),
+    );
+  }
+}
