@@ -1,5 +1,5 @@
 import { Identifiable } from '..';
-import SequelizeTeams from '../../database/models/SequelizeTeams';
+import SequelizeTeams from '../../database/models/SequelizeTeam';
 
 export interface IMatchesBody extends Identifiable {
   homeTeamId: number;
