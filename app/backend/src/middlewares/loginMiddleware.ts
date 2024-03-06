@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import { NextFunction, Request, Response } from 'express';
 import IUser from '../Interfaces/User/IUser';
 
-export default class LoginMiddleware {
+class LoginMiddleware {
   private static messageEmptyField = 'All fields must be filled';
   private static messageInvalidField = 'Invalid email or password';
 
@@ -24,7 +24,7 @@ export default class LoginMiddleware {
     if (error) return error.details[0].message;
   }
 
-  static validateLogin(req: Request, res: Response, next: NextFunction): Response | void {
+  public static validateLogin(req: Request, res: Response, next: NextFunction): Response | void {
     const message = LoginMiddleware.validateLoginFields(req.body);
 
     if (message) {
@@ -37,3 +37,5 @@ export default class LoginMiddleware {
     next();
   }
 }
+
+export default LoginMiddleware.validateLogin;
