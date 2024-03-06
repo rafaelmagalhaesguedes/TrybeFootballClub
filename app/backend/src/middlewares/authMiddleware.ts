@@ -1,20 +1,23 @@
 import { NextFunction, Request, Response } from 'express';
 import JwtService from '../utils/JwtService';
 
-const errorMessage = 'Token must be a valid token';
-
-export default function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+class AuthMiddleware {
   //
-  const { authorization } = req.headers;
-  if (!authorization) return res.status(401).json({ message: 'Token not found' });
+  public static validateToken(req: Request, res: Response, next: NextFunction) {
+    const { authorization } = req.headers;
+    if (!authorization) return res.status(401).json({ message: 'Token not found' });
 
-  const token = JwtService.splitToken(authorization);
-  if (!token) return res.status(401).json({ message: errorMessage });
+    try {
+      const token = JwtService.splitToken(authorization);
+      const payload = JwtService.verifyToken(token);
+      res.locals.user = payload;
+    } catch (error) {
+      console.log('Invalid Token!', error);
+      return res.status(401).json({ message: 'Token must be a valid token' });
+    }
 
-  const payload = JwtService.verifyToken(token);
-  if (!payload) return res.status(401).json({ message: errorMessage });
-
-  res.locals.user = payload;
-
-  next();
+    next();
+  }
 }
+
+export default AuthMiddleware.validateToken;
