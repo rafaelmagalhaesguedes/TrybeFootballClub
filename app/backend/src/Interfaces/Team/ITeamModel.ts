@@ -2,5 +2,5 @@ import { ITeam } from './ITeam';
 
 export interface ITeamModel {
   findAll(): Promise<ITeam[]>;
-  findById(id: number): Promise<ITeam | null>;
+  findById(id: ITeam['id']): Promise<ITeam | null>;
 }
