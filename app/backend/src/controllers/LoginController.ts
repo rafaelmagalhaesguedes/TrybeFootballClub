@@ -7,13 +7,13 @@ export default class LoginController {
   //
   constructor(private loginService = new LoginService()) { }
 
-  async signUp(req: Request, res: Response) {
+  public async signUp(req: Request, res: Response) {
     const { email, password } = req.body;
     const { status, data } = await this.loginService.sign(email, password);
     return res.status(statusCode(status)).json(data);
   }
 
-  async getUserRole(_req: Request, res: Response) {
+  public async getUserRole(_req: Request, res: Response) {
     const { email } = res.locals.user;
     const { status, data } = await this.loginService.getRole(email);
     return res.status(statusCode(status)).json(data);

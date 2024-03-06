@@ -10,7 +10,7 @@ export default class LoginService {
 
   constructor(private userModel: IUserModel = new UserModel()) { }
 
-  async sign(email: string, password: string) {
+  public async sign(email: string, password: string) {
     const user = await this.userModel.findUserByEmail(email);
     if (!user) return { status: 'UNAUTHORIZED', data: { message: this.errorMessage } };
 
@@ -23,7 +23,7 @@ export default class LoginService {
     return { status: 'SUCCESSFUL', data: { token } };
   }
 
-  async getRole(email: string) {
+  public async getRole(email: string) {
     const user = await this.userModel.findUserByEmail(email);
     if (!user) return { status: 'UNAUTHORIZED', data: { message: this.errorMessage } };
 
