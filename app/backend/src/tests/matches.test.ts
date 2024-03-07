@@ -28,5 +28,17 @@ describe('Matches Tests', () => {
       expect(res.status).to.equal(200);
       expect(res.body).to.deep.equal(matchesMock);
     });
+
+    it('should return all matches in progress', async () => {
+      // arrange
+      sinon.stub(SequelizeMatches, 'findAll').resolves(matchesMock as any);
+    
+      // act
+      const res = await chai.request(app).get('/matches?inProgress=true');
+    
+      // assert
+      expect(res.status).to.equal(200);
+      expect(res.body).to.deep.equal(matchesMock);
+    });
   });
 });
