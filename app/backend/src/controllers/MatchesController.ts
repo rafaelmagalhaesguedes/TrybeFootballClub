@@ -7,8 +7,12 @@ export default class MatchesController {
   //
   constructor(private matchesService = new MatchesService()) { }
 
-  public async getAllMatches(_req: Request, res: Response): Promise<Response | void> {
-    const { status, data } = await this.matchesService.getMatches();
+  public async getAllMatches(req: Request, res: Response): Promise<Response | void> {
+    //
+    const { inProgress } = req.query;
+    const query = inProgress as string | undefined; // inProgress is a string or undefined, trust me
+
+    const { status, data } = await this.matchesService.getMatches(query);
     res.status(statusCode(status)).json(data);
   }
 }
