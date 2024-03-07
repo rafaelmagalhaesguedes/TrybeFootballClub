@@ -22,4 +22,15 @@ export default class MatchesService {
 
     return { status: 'SUCCESSFUL', data: matches };
   }
+
+  public async updateMatch(id: number): Promise<ServiceResponse<ServiceMessage | IMatches>> {
+    //
+    const match = await this.matchesModel.updateMatch(id);
+
+    if (match === null) {
+      return { status: 'NOT_FOUND', data: { message: 'Match not found' } };
+    }
+
+    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
 }

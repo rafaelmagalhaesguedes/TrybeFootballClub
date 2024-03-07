@@ -15,4 +15,13 @@ export default class MatchesController {
     const { status, data } = await this.matchesService.getMatches(query);
     res.status(statusCode(status)).json(data);
   }
+
+  public async updateMatchProgress(req: Request, res: Response): Promise<Response | void> {
+    //
+    const { id } = req.params;
+    const matchId = Number(id); // Transform id to a number
+
+    const { status, data } = await this.matchesService.updateMatch(matchId);
+    res.status(statusCode(status)).json(data);
+  }
 }

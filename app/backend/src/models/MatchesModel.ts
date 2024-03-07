@@ -21,4 +21,12 @@ export default class MatchesModel implements IMatchesModel {
 
     return matches;
   }
+
+  public async updateMatch(id: number): Promise<IMatches | null> {
+    const match = await this.matchesModel.findByPk(id);
+    if (!match) return null;
+
+    const updatedMatch = await match.update({ inProgress: !match.inProgress });
+    return updatedMatch;
+  }
 }
