@@ -13,3 +13,8 @@ export interface IMatches extends IMatchesBody {
   homeTeam?: SequelizeTeams;
   awayTeam?: SequelizeTeams;
 }
+
+export interface IMatchesResults {
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}

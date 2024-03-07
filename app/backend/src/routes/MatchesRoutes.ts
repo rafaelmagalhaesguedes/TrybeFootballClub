@@ -25,5 +25,12 @@ export default class MatchesRoutes {
       Authenticate,
       (req: Request, res: Response) => this.matchesController.updateMatchProgress(req, res),
     );
+
+    // Update match results
+    this.router.patch(
+      '/:id',
+      Authenticate,
+      (req: Request, res: Response) => this.matchesController.updateMatchResults(req, res),
+    );
   }
 }

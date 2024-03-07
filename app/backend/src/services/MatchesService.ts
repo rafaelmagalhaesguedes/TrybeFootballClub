@@ -1,7 +1,7 @@
 import MatchesModel from '../models/MatchesModel';
 import { IMatchesModel } from '../Interfaces/Matches/IMatchesModel';
 import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
-import { IMatches } from '../Interfaces/Matches/IMatches';
+import { IMatches, IMatchesResults } from '../Interfaces/Matches/IMatches';
 
 export default class MatchesService {
   constructor(private matchesModel: IMatchesModel = new MatchesModel()) { }
@@ -32,5 +32,17 @@ export default class MatchesService {
     }
 
     return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
+
+  public async updateMatchResults(id: number, results: IMatchesResults):
+  Promise<ServiceResponse<ServiceMessage | IMatches>> {
+    //
+    const match = await this.matchesModel.updateMatchResults(id, results);
+
+    if (match === null) {
+      return { status: 'NOT_FOUND', data: { message: 'Match not found' } };
+    }
+
+    return { status: 'SUCCESSFUL', data: { message: 'The match result has been changed' } };
   }
 }
