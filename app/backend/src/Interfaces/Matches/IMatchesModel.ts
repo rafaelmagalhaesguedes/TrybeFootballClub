@@ -1,5 +1,5 @@
 import { IMatches } from './IMatches';
 
 export interface IMatchesModel {
-  findAllMatches(): Promise<IMatches[] | null>;
+  findMatches(query?: boolean | undefined): Promise<IMatches[] | null>;
 }
