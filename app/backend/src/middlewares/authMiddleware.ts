@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import JwtService from '../utils/JwtService';
+import JwtService from '../services/JwtService';
 
 class AuthMiddleware {
   //
