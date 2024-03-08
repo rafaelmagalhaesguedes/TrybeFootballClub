@@ -1,9 +1,15 @@
 import MatchesModel from '../models/MatchesModel';
 import { IMatchesModel } from '../Interfaces/Matches/IMatchesModel';
 import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
-import { IMatches, IMatchesResults } from '../Interfaces/Matches/IMatches';
+import { IMatches, IMatchesCreate, IMatchesResults } from '../Interfaces/Matches/IMatches';
 
 export default class MatchesService {
+  // Error messages
+  private messageConflict = 'It is not possible to create a match with two equal teams';
+  private messageTeamNotFound = 'There is no team with such id!';
+  private messageMatchNotFound = 'Match not found';
+  private messageSuccess = 'The match result has been changed';
+
   constructor(private matchesModel: IMatchesModel = new MatchesModel()) { }
 
   public async getMatches(query?: string | undefined):
@@ -17,18 +23,35 @@ export default class MatchesService {
       : await this.matchesModel.findMatches(); // inProgress is undefined
 
     if (matches === null) {
-      return { status: 'NOT_FOUND', data: { message: 'No matches found' } };
+      return { status: 'NOT_FOUND', data: { message: this.messageMatchNotFound } };
     }
 
     return { status: 'SUCCESSFUL', data: matches };
   }
 
-  public async updateMatch(id: number): Promise<ServiceResponse<ServiceMessage | IMatches>> {
+  public async createMatch(match: IMatchesCreate):
+  Promise<ServiceResponse<ServiceMessage | IMatches>> {
     //
-    const match = await this.matchesModel.updateMatch(id);
+    if (match.homeTeamId === match.awayTeamId) {
+      return { status: 'UNPROCESSABLE_ENTITY', data: { message: this.messageConflict } };
+    }
+
+    const newMatch = await this.matchesModel.createMatch(match);
+
+    if (newMatch === null) { // If the team does not exist
+      return { status: 'NOT_FOUND', data: { message: this.messageTeamNotFound } };
+    }
+
+    return { status: 'CREATED', data: newMatch };
+  }
+
+  public async updateMatchProgress(id: number):
+  Promise<ServiceResponse<ServiceMessage | IMatches>> {
+    //
+    const match = await this.matchesModel.updateMatchProgress(id);
 
     if (match === null) {
-      return { status: 'NOT_FOUND', data: { message: 'Match not found' } };
+      return { status: 'NOT_FOUND', data: { message: this.messageMatchNotFound } };
     }
 
     return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
@@ -40,9 +63,9 @@ export default class MatchesService {
     const match = await this.matchesModel.updateMatchResults(id, results);
 
     if (match === null) {
-      return { status: 'NOT_FOUND', data: { message: 'Match not found' } };
+      return { status: 'NOT_FOUND', data: { message: this.messageMatchNotFound } };
     }
 
-    return { status: 'SUCCESSFUL', data: { message: 'The match result has been changed' } };
+    return { status: 'SUCCESSFUL', data: { message: this.messageSuccess } };
   }
 }
