@@ -18,3 +18,10 @@ export interface IMatchesResults {
   homeTeamGoals: number;
   awayTeamGoals: number;
 }
+
+export interface IMatchesCreate {
+  homeTeamId: number;
+  awayTeamId: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}
