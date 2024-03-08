@@ -12,11 +12,12 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-// Generates a new token
+// Options for the token
 const secret = 'secretKey';
 const payload = { userId: 1, userEmail: 'rafael@dev.com'};
 const options = { expiresIn: '1h' };
 
+// Generate a token
 const generateToken = () => jwt.sign(payload, secret, options);
 
 let tokenMock: string;
