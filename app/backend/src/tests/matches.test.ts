@@ -13,20 +13,14 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 // Options for the token
-const secret = 'secretKey';
-const payload = { userId: 1, userEmail: 'rafael@dev.com'};
+const secret = process.env.JWT_SECRET || 'secretKey';
+const payload = { id: 1, email: 'rafael@dev.com'};
 const options = { expiresIn: '1h' };
 
 // Generate a token
-const generateToken = () => jwt.sign(payload, secret, options);
-
-let tokenMock: string;
+const tokenMock = jwt.sign(payload, secret, options);
 
 describe('Matches Tests', () => {
-
-  beforeEach(() => {
-    tokenMock = generateToken();
-  });
 
   afterEach(() => {
     sinon.restore();
