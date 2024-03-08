@@ -44,6 +44,22 @@ describe('Matches Tests', () => {
       expect(res.body).to.deep.equal(matchesMock);
     });
 
+    it('should create a new match', async () => {
+      // arrange
+      const newMatch = { homeTeamId: 1, awayTeamId: 2, homeTeamGoals: 6, awayTeamGoals: 1 };
+      sinon.stub(MatchesModel, 'create').resolves(newMatch as any);
+
+      // act
+      const res = await chai.request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${tokenMock}`)
+        .send(newMatch);
+
+      // assert
+      expect(res.status).to.equal(201);
+      expect(res.body).to.deep.equal(newMatch);
+    });
+
     it('should return all matches in progress', async () => {
       // arrange
       const inProgressMatches = matchesMock.filter(match => match.inProgress);
@@ -57,7 +73,7 @@ describe('Matches Tests', () => {
       expect(res.body).to.deep.equal(inProgressMatches);
     });
 
-    it('should update a match', async () => {
+    it('should update a match progress', async () => {
       // arrange
       const matchId = 1;
       const updatedMatch = { ...matchesMock[0], inProgress: false };
