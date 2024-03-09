@@ -1,11 +1,14 @@
 import { expect } from 'chai';
-import LeaderBoard from '../utils/LeaderBoard';
+import HomeTeam from '../LeaderBoard/HomeTeam';
+import AwayTeam from '../LeaderBoard/AwayTeam';
 
 describe('LeaderBoard', () => {
-  let leaderBoard: LeaderBoard;
+  let homeTeam: HomeTeam;
+  let awayTeam: AwayTeam;
 
   beforeEach(() => {
-    leaderBoard = new LeaderBoard();
+    homeTeam = new HomeTeam();
+    awayTeam = new AwayTeam();
   });
 
   describe('Home Teams Data', () => {
@@ -16,7 +19,7 @@ describe('LeaderBoard', () => {
         { homeTeamGoals: 1, awayTeamGoals: 3 },
       ];
 
-      const result = leaderBoard.homeTeamsData('Team A', matches as any);
+      const result = homeTeam.getTeamData('Team A', matches as any, true);
 
       expect(result).to.deep.equal({
         name: 'Team A',
@@ -41,7 +44,7 @@ describe('LeaderBoard', () => {
         { homeTeamGoals: 3, awayTeamGoals: 1 },
       ];
 
-      const result = leaderBoard.awayTeamsData('Team B', matches as any);
+      const result = awayTeam.getTeamData('Team B', matches as any, false);
 
       expect(result).to.deep.equal({
         name: 'Team B',
