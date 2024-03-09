@@ -1,35 +1,33 @@
-import SequelizeMatch from '../database/models/SequelizeMatches';
-import SequelizeTeam from '../database/models/SequelizeTeam';
-import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
+import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
-import teamsClassified from '../utils/MatchesSort';
-import LeaderBoard from '../utils/LeaderBoard';
+import teamsClassified from '../LeaderBoard/SortMatches';
+import HomeTeam from '../LeaderBoard/HomeTeam';
+import AwayTeam from '../LeaderBoard/AwayTeam';
+import SequelizeMatches from '../database/models/SequelizeMatches';
+import SequelizeTeam from '../database/models/SequelizeTeam';
 
 export default class LeaderBoardService {
   //
-  private matchesModel = SequelizeMatch;
+  private matchesModel = SequelizeMatches;
   private teamModel = SequelizeTeam;
+  private homeTeam = new HomeTeam();
+  private awayTeam = new AwayTeam();
 
-  constructor(private leaderBoard = new LeaderBoard()) { }
-
-  public async getHomeLeaderBoard():
-  Promise<ServiceResponse<ServiceMessage | ILeaderBoard[]>> {
+  public async getHomeLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
     //
     const getTeams = await this.teamModel.findAll();
 
     const homeTeams = getTeams.map(async (team) => {
       const homeMatches = await this.matchesModel.findAll({
-        where: { homeTeamId: team.id, inProgress: false },
+        where: { awayTeamId: team.id, inProgress: false },
       });
 
       const homeStats = homeMatches.map((match) =>
-        this.leaderBoard.homeTeamsData(team.teamName, [match]));
+        this.homeTeam.getHomeTeamData(team.teamName, [match]));
 
       const teamsStats = homeStats[homeMatches.length - 1];
       return { ...teamsStats };
     });
-
-    if (homeTeams.length === 0) return { status: 'NOT_FOUND', data: { message: 'No teams found' } };
 
     const results = await Promise.all(homeTeams);
     const orderdResults = teamsClassified.sortMatches(results);
@@ -37,8 +35,7 @@ export default class LeaderBoardService {
     return { status: 'SUCCESSFUL', data: orderdResults };
   }
 
-  public async getAwayLeaderBoard():
-  Promise<ServiceResponse<ServiceMessage | ILeaderBoard[]>> {
+  public async getAwayLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
     //
     const getTeams = await this.teamModel.findAll();
 
@@ -48,13 +45,11 @@ export default class LeaderBoardService {
       });
 
       const awayStats = awayMatches.map((match) =>
-        this.leaderBoard.awayTeamsData(team.teamName, [match]));
+        this.awayTeam.getAwayTeamData(team.teamName, [match]));
 
       const teamsStats = awayStats[awayMatches.length - 1];
       return { ...teamsStats };
     });
-
-    if (awayTeams.length === 0) return { status: 'NOT_FOUND', data: { message: 'No teams found' } };
 
     const results = await Promise.all(awayTeams);
     const orderdResults = teamsClassified.sortMatches(results);
