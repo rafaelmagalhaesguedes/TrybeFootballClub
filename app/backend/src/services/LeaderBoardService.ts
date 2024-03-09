@@ -19,7 +19,7 @@ export default class LeaderBoardService {
 
     const homeTeams = getTeams.map(async (team) => {
       const homeMatches = await this.matchesModel.findAll({
-        where: { awayTeamId: team.id, inProgress: false },
+        where: { homeTeamId: team.id, inProgress: false },
       });
 
       const homeStats = homeMatches.map((match) =>
