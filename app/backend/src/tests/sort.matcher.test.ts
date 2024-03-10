@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import MatchesSorter from '../LeaderBoard/SortMatches';
+import MatchesSorter from '../utils/SortMatches';
 
 describe('MatchesSorter', () => {
     it('should correctly sort matches', () => {
