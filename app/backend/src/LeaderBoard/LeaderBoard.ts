@@ -3,7 +3,7 @@ import { IMatches } from '../Interfaces/Matches/IMatches';
 
 export default class LeaderBoard {
   //
-  private teamData: ILeaderBoard;
+  protected teamData: ILeaderBoard;
 
   constructor() {
     this.teamData = {
@@ -20,7 +20,7 @@ export default class LeaderBoard {
     };
   }
 
-  private restartTeam() {
+  protected restartTeam() {
     this.teamData.totalPoints = 0;
     this.teamData.totalGames = 0;
     this.teamData.totalVictories = 0;
@@ -32,31 +32,46 @@ export default class LeaderBoard {
     this.teamData.efficiency = 0;
   }
 
-  private teamVictory() {
+  protected calculateTeamVictory() {
     this.teamData.totalPoints += 3;
     this.teamData.totalVictories += 1;
   }
 
-  private teamDraw() {
+  protected calculateTeamDraw() {
     this.teamData.totalPoints += 1;
     this.teamData.totalDraws += 1;
   }
 
-  private teamLoss() {
+  protected calculateTeamLoss() {
     this.teamData.totalLosses += 1;
   }
 
-  private calculateTeamData(matches: IMatches[], isHomeTeam: boolean) {
+  protected calculateTotalGames() {
+    this.teamData.totalGames = this.teamData.totalVictories
+    + this.teamData.totalDraws + this.teamData.totalLosses;
+  }
+
+  protected calculateGoalsBalance() {
+    this.teamData.goalsBalance = this.teamData.goalsFavor - this.teamData.goalsOwn;
+  }
+
+  protected calculateEfficiency() {
+    this.teamData.efficiency = Number(
+      ((this.teamData.totalPoints / (this.teamData.totalGames * 3)) * 100).toFixed(2),
+    );
+  }
+
+  protected calculateTeamData(matches: IMatches[], isHomeTeam: boolean) {
     matches.forEach((match) => {
       const teamGoals = isHomeTeam ? match.homeTeamGoals : match.awayTeamGoals;
       const opponentGoals = isHomeTeam ? match.awayTeamGoals : match.homeTeamGoals;
 
       if (teamGoals > opponentGoals) {
-        this.teamVictory();
+        this.calculateTeamVictory();
       } else if (teamGoals === opponentGoals) {
-        this.teamDraw();
+        this.calculateTeamDraw();
       } else {
-        this.teamLoss();
+        this.calculateTeamLoss();
       }
 
       this.teamData.goalsFavor += teamGoals;
@@ -65,18 +80,13 @@ export default class LeaderBoard {
   }
 
   public getTeamData(name: string, matches: IMatches[], isHomeTeam: boolean) {
-    if (name !== this.teamData.name) {
-      this.restartTeam();
-    }
+    if (name !== this.teamData.name) this.restartTeam();
 
     this.teamData.name = name;
     this.calculateTeamData(matches, isHomeTeam);
-    this.teamData.totalGames += matches.length;
-
-    this.teamData.goalsBalance = this.teamData.goalsFavor - this.teamData.goalsOwn;
-    this.teamData.efficiency = Number(
-      ((this.teamData.totalPoints / (this.teamData.totalGames * 3)) * 100).toFixed(2),
-    );
+    this.calculateTotalGames();
+    this.calculateGoalsBalance();
+    this.calculateEfficiency();
 
     return this.teamData;
   }
