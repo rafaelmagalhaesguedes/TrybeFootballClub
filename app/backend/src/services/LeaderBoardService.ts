@@ -1,9 +1,7 @@
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
 import teamsClassified from '../utils/SortMatches';
-import HomeTeam from '../LeaderBoard/HomeTeam';
-import AwayTeam from '../LeaderBoard/AwayTeam';
-import AllTeams from '../LeaderBoard/AllTeams';
+import TeamData from '../LeaderBoard/TeamData';
 import SequelizeMatches from '../database/models/SequelizeMatches';
 import SequelizeTeam from '../database/models/SequelizeTeam';
 
@@ -11,9 +9,7 @@ export default class LeaderBoardService {
   //
   private matchesModel = SequelizeMatches;
   private teamModel = SequelizeTeam;
-  private homeTeam = new HomeTeam();
-  private awayTeam = new AwayTeam();
-  private allTeams = new AllTeams();
+  private teamBoard = new TeamData();
 
   public async getLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
     //
@@ -26,7 +22,7 @@ export default class LeaderBoardService {
       const awayMatches = await this.matchesModel.findAll({
         where: { awayTeamId: team.id, inProgress: false } });
 
-      const teamsStats = this.allTeams.getAllTeamData(team.teamName, homeMatches, awayMatches);
+      const teamsStats = this.teamBoard.getAllTeamsData(team.teamName, homeMatches, awayMatches);
       return { ...teamsStats };
     });
 
@@ -45,7 +41,7 @@ export default class LeaderBoardService {
         where: { homeTeamId: team.id, inProgress: false } });
 
       const homeStats = homeMatches.map((match) =>
-        this.homeTeam.getHomeTeamData(team.teamName, [match]));
+        this.teamBoard.getTeamData(team.teamName, [match], true));
 
       const teamsStats = homeStats[homeMatches.length - 1];
       return { ...teamsStats };
@@ -66,7 +62,7 @@ export default class LeaderBoardService {
         where: { awayTeamId: team.id, inProgress: false } });
 
       const awayStats = awayMatches.map((match) =>
-        this.awayTeam.getAwayTeamData(team.teamName, [match]));
+        this.teamBoard.getTeamData(team.teamName, [match], false));
 
       const teamsStats = awayStats[awayMatches.length - 1];
       return { ...teamsStats };
