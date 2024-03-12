@@ -61,7 +61,7 @@ Para executar o repositório localmente, siga estas etapas:
 
 2. Navegue até a pasta raiz do projeto.
 
-3. Execute __npm run install:apps__ para instalar todas as dependências, do Backend e do Frontend.
+3. Execute npm run install:apps para instalar todas as dependências, do Backend e do Frontend.
 
 4. Para instalar as dependências separado para cada microserviço, entre na pasta e execute o npm install.
   
@@ -69,14 +69,14 @@ Para executar o repositório localmente, siga estas etapas:
 
 5. Execute npm run compose:up na raiz do projeto para iniciar os containers Docker da aplicação.
 
-6. Para verificar os Logs da aplicação geral, use __docker-compose logs__.
+6. Para verificar os Logs da aplicação geral, use docker-compose logs.
 
-7. Para verificar os logs de um microserviço separadamente use __docker-compose logs <nome-do-serviço>.
+7. Para verificar os logs de um microserviço separadamente use docker-compose logs <nome-do-serviço>.
 
   - Lembrando que vai subir três containers, o Frontend, Backend e o Banco de dados.
   - Para usar um banco de dados local, altere as informações no docker file.
 
-8. Para parar a aplicação, execute __npm run compose:down__.
+8. Para parar a aplicação, execute npm run compose:down.
 ```
 ## Executando Testes
 
@@ -84,9 +84,9 @@ Para executar os testes, siga estas etapas:
 ```
 1. Navegue até a pasta app/backend.
 
-2. Execute __npm test__ para executar os testes unitários.
+2. Execute npm test para executar os testes unitários.
 
-3. Para verificar a cobertura dos tests, digite __npm test:coverage__.
+3. Para verificar a cobertura dos tests, digite npm test:coverage.
 
 ```
 
