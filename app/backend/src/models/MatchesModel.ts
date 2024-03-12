@@ -4,10 +4,13 @@ import SequelizeTeams from '../database/models/SequelizeTeam';
 import { IMatches, IMatchesCreate, IMatchesResults } from '../Interfaces/Matches/IMatches';
 
 export default class MatchesModel implements IMatchesModel {
-  private matchesModel = SequelizeMatches;
-  private teamModel = SequelizeTeams;
+  //
+  constructor(
+    private matchesModel = SequelizeMatches,
+    private teamModel = SequelizeTeams,
+  ) {}
 
-  public async findMatches(inProgress?: boolean): Promise<IMatches[] | null> {
+  public async getAllMatches(inProgress?: boolean): Promise<IMatches[] | null> {
     //
     const whereCondition = inProgress !== undefined ? { inProgress } : {};
 
@@ -22,6 +25,20 @@ export default class MatchesModel implements IMatchesModel {
     return matches;
   }
 
+  public async getHomeMatches(teamId: number) {
+    //
+    return this.matchesModel.findAll({
+      where: { homeTeamId: teamId, inProgress: false },
+    });
+  }
+
+  public async getAwayMatches(teamId: number) {
+    //
+    return this.matchesModel.findAll({
+      where: { awayTeamId: teamId, inProgress: false },
+    });
+  }
+
   public async createMatch(match: IMatchesCreate): Promise<IMatches | null> {
     //
     const homeTeamExists = await this.teamModel.findOne({ where: { id: match.homeTeamId } });
@@ -33,7 +50,6 @@ export default class MatchesModel implements IMatchesModel {
     const newMatch = await this.matchesModel.create({ ...match, inProgress: true });
 
     const { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress } = newMatch;
-
     return { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress };
   }
 
