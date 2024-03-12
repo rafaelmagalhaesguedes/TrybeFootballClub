@@ -92,7 +92,7 @@ Para executar os testes, siga estas etapas:
 
 ## Dúvidas, sugestões ou feedbacks?
 
-- Entre em contato comigo através do linkdIn - https://www.linkedin.com/in/rafael-magalh%C3%A3es-guedes/.
+- Entre em contato comigo no linkedIn - https://www.linkedin.com/in/rafael-magalh%C3%A3es-guedes/.
 - Estou sempre aberto a novas ideias, sugestões e feedbacks.
 
 > Rafael M.
