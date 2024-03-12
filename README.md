@@ -6,11 +6,13 @@ __Link do Deploy__: [Trybe Football Club](https://deploy-project-fcmnaw2el-rafae
 
 ## Tecnologias Utilizadas
 
+- React.js
 - Node.js
 - Express
 - TypeScript
 - MySQL/PostgreSQL
 - Sequelize
+- Mocha/Sinon/Chai
 - Docker
 
 ## Princípios e Práticas
@@ -51,18 +53,30 @@ e Controladores para uma melhor organização e separação de responsabilidades
 - __GET /leaderboard/home__: Retorna a classificação dos times mandantes.
 - __GET /leaderboard/away__: Retorna a classificação dos times visitantes.
 
-## Como Executar Localmente
+## Como Executar Localmente com Docker
 
 Para executar o repositório localmente, siga estas etapas:
 ```
 1. Clone este repositório usando git clone.
 
-2. Navegue até a pasta do projeto e execute npm install 
-para instalar todas as dependências.
+2. Navegue até a pasta raiz do projeto.
 
-3. Execute npm run compose:up para iniciar os containers da aplicação.
+3. Execute __npm run install:apps__ para instalar todas as dependências, do Backend e do Frontend.
 
-4. Para parar a aplicação, execute npm run compose:down.
+4. Para instalar as dependências separado para cada microserviço, entre na pasta e execute o npm install.
+  
+  -ex: app/backend npm install, mesma coisa no frontend.
+
+5. Execute npm run compose:up na raiz do projeto para iniciar os containers Docker da aplicação.
+
+6. Para verificar os Logs da aplicação geral, use __docker-compose logs__.
+
+7. Para verificar os logs de um microserviço separadamente use __docker-compose logs <nome-do-serviço>.
+
+  - Lembrando que vai subir três containers, o Frontend, Backend e o Banco de dados.
+  - Para usar um banco de dados local, altere as informações no docker file.
+
+8. Para parar a aplicação, execute __npm run compose:down__.
 ```
 ## Executando Testes
 
@@ -70,7 +84,15 @@ Para executar os testes, siga estas etapas:
 ```
 1. Navegue até a pasta app/backend.
 
-2. Execute npm test para executar os testes unitários.
+2. Execute __npm test__ para executar os testes unitários.
 
-3. Para executar os testes de integração, utilize os comandos fornecidos na documentação.
+3. Para verificar a cobertura dos tests, digite __npm test:coverage__.
+
 ```
+
+## Dúvidas, sugestões ou feedbacks?
+
+- Entre em contato comigo através do linkdIn - https://www.linkedin.com/in/rafael-magalh%C3%A3es-guedes/.
+- Estou sempre aberto a novas ideias, sugestões e feedbacks.
+
+> Rafael M.
