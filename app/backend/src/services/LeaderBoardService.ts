@@ -1,11 +1,10 @@
-import { ServiceResponse } from '../Interfaces/ServiceResponse';
+//
 import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
-import Sort from '../utils/SortMatches';
-import TeamData from '../LeaderBoard/TeamData';
-/* import SequelizeMatches from '../database/models/SequelizeMatches'; */
-/* import SequelizeTeam from '../database/models/SequelizeTeam'; */
-import TeamModel from '../models/TeamModel';
+import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import MatchesModel from '../models/MatchesModel';
+import TeamData from '../LeaderBoard/TeamData';
+import TeamModel from '../models/TeamModel';
+import Sort from '../utils/SortMatches';
 
 export default class LeaderBoardService {
   //
@@ -17,51 +16,46 @@ export default class LeaderBoardService {
 
   public async getLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
     //
-    const allTeams = await this.teamModel.getHomeAndAwayTeams();
+    const getAllTeams = await this.teamModel.getHomeAndAwayTeams();
 
-    const teams = allTeams.map(async (team) => {
+    const filterTeams = getAllTeams.map(async (team) => {
       const { teamName, homeMatches, awayMatches } = team;
-      const teamsStats = this.teamData
-        .getAllTeamsData(teamName, homeMatches || [], awayMatches || []);
-      return { ...teamsStats };
+      const updateStats = this.teamData.getAllTeams(teamName, homeMatches || [], awayMatches || []);
+      return { ...updateStats };
     });
 
-    const results = await Promise.all(teams);
-    const orderedResults = Sort(results);
-    return { status: 'SUCCESSFUL', data: orderedResults };
+    const allTeams = await Promise.all(filterTeams);
+    const orderedTeams = Sort(allTeams);
+    return { status: 'SUCCESSFUL', data: orderedTeams };
   }
 
   public async getHomeLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
     //
-    const allTeams = await this.teamModel.getHomeAndAwayTeams();
+    const getAllTeams = await this.teamModel.getHomeAndAwayTeams();
 
-    const homeTeams = allTeams.map(async (team) => {
+    const filterHomeTeams = getAllTeams.map(async (team) => {
       const homeMatches = await this.matchesModel.getHomeMatches(team.id);
-      const homeStats = homeMatches.map((match) =>
-        this.teamData.getTeamData(team.teamName, [match], true));
-      const teamsStats = homeStats[homeMatches.length - 1];
-      return { ...teamsStats };
+      const updateStats = this.teamData.getTeam(team.teamName, homeMatches, true);
+      return { ...updateStats };
     });
 
-    const results = await Promise.all(homeTeams);
-    const orderdResults = Sort(results);
-    return { status: 'SUCCESSFUL', data: orderdResults };
+    const homeTeams = await Promise.all(filterHomeTeams);
+    const orderedHomeTeams = Sort(homeTeams);
+    return { status: 'SUCCESSFUL', data: orderedHomeTeams };
   }
 
   public async getAwayLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
     //
-    const allTeams = await this.teamModel.getHomeAndAwayTeams();
+    const getAllTeams = await this.teamModel.getHomeAndAwayTeams();
 
-    const awayTeams = allTeams.map(async (team) => {
+    const filterAwayTeams = getAllTeams.map(async (team) => {
       const awayMatches = await this.matchesModel.getAwayMatches(team.id);
-      const awayStats = awayMatches.map((match) =>
-        this.teamData.getTeamData(team.teamName, [match], false));
-      const teamsStats = awayStats[awayMatches.length - 1];
-      return { ...teamsStats };
+      const updateStats = this.teamData.getTeam(team.teamName, awayMatches, false);
+      return { ...updateStats };
     });
 
-    const results = await Promise.all(awayTeams);
-    const orderdResults = Sort(results);
-    return { status: 'SUCCESSFUL', data: orderdResults };
+    const awayTeams = await Promise.all(filterAwayTeams);
+    const orderedAwayTeams = Sort(awayTeams);
+    return { status: 'SUCCESSFUL', data: orderedAwayTeams };
   }
 }

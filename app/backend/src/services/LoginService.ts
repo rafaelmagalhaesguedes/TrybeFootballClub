@@ -1,7 +1,7 @@
 //
 import * as bcript from 'bcryptjs';
-import JwtService from '../utils/JwtService';
 import UserModel from '../models/UserModel';
+import JwtService from '../utils/JwtService';
 import { IUserModel } from '../Interfaces/User/IUserModel';
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import { ILogin, IUserRole, IToken } from '../Interfaces/User/IUser';

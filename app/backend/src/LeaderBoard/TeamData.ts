@@ -3,7 +3,7 @@ import TeamBoard from './TeamBoard';
 
 export default class TeamData extends TeamBoard {
   //
-  public getTeamData(name: string, matches: IMatches[], isHomeTeam: boolean) {
+  public getTeam(name: string, matches: IMatches[], isHomeTeam: boolean) {
     //
     if (name !== this.teamData.name) this.restartTeam();
 
@@ -16,15 +16,15 @@ export default class TeamData extends TeamBoard {
     return this.teamData;
   }
 
-  public getAllTeamsData(name: string, homeMatches: IMatches[], awayMatches: IMatches[]) {
+  public getAllTeams(name: string, homeMatches: IMatches[], awayMatches: IMatches[]) {
     //
     this.restartTeam();
 
     this.calculateTeamData(homeMatches, true);
     this.calculateTeamData(awayMatches, false);
 
-    this.getTeamData(name, homeMatches, true);
-    this.getTeamData(name, awayMatches, false);
+    this.getTeam(name, homeMatches, true);
+    this.getTeam(name, awayMatches, false);
 
     return this.teamData;
   }
