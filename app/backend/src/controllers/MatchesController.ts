@@ -19,7 +19,6 @@ export default class MatchesController {
   public async createMatch(req: Request, res: Response): Promise<Response | void> {
     //
     const match = req.body;
-
     const { status, data } = await this.matchesService.createMatch(match);
     res.status(statusCode(status)).json(data);
   }
@@ -36,12 +35,8 @@ export default class MatchesController {
   public async updateMatchResults(req: Request, res: Response): Promise<Response | void> {
     //
     const { id } = req.params;
-    const matchId = Number(id); // Transform id to a number
-
-    const { homeTeamGoals, awayTeamGoals } = req.body;
-    const results = { homeTeamGoals, awayTeamGoals };
-
-    const { status, data } = await this.matchesService.updateMatchResults(matchId, results);
+    const { body } = req;
+    const { status, data } = await this.matchesService.updateMatchResults(Number(id), body);
     res.status(statusCode(status)).json(data);
   }
 }

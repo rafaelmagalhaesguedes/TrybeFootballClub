@@ -1,7 +1,7 @@
 import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
 
-export default class MatchesSorter {
-  public static sortMatches(matches: ILeaderBoard[]) {
+class MatchesSorter {
+  public static Sort(matches: ILeaderBoard[]) {
     return matches.sort((a, b) => {
       // Sort by totalPoints
       if (b.totalPoints !== a.totalPoints) {
@@ -27,3 +27,5 @@ export default class MatchesSorter {
     });
   }
 }
+
+export default MatchesSorter.Sort;

@@ -11,7 +11,7 @@ describe('MatchesService', () => {
     it('should get matches', async () => {
         const matches = [{ id: 1, homeTeamId: 1, awayTeamId: 2 }];
 
-        sinon.stub(MatchesModel.prototype, 'findMatches').resolves(matches as any);
+        sinon.stub(MatchesModel.prototype, 'getAllMatches').resolves(matches as any);
 
         const service = new MatchesService();
         const result = await service.getMatches();
@@ -58,7 +58,7 @@ describe('MatchesService', () => {
     });
 
     it('should return not found when there is no match', async () => {
-        sinon.stub(MatchesModel.prototype, 'findMatches').resolves(null);
+        sinon.stub(MatchesModel.prototype, 'getAllMatches').resolves(null);
 
         const service = new MatchesService();
         const result = await service.getMatches();

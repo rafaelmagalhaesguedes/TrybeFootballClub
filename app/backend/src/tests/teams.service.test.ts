@@ -11,7 +11,7 @@ describe('TeamService', () => {
     it('should get all teams', async () => {
         const teams = [{ id: 1, name: 'Team 1' }, { id: 2, name: 'Team 2' }];
 
-        sinon.stub(TeamModel.prototype, 'findAll').resolves(teams as any);
+        sinon.stub(TeamModel.prototype, 'getAll').resolves(teams as any);
 
         const service = new TeamService();
         const result = await service.getAllTeams();
@@ -23,7 +23,7 @@ describe('TeamService', () => {
     it('should get a team by id', async () => {
         const team = { id: 1, name: 'Team 1' };
 
-        sinon.stub(TeamModel.prototype, 'findById').resolves(team as any);
+        sinon.stub(TeamModel.prototype, 'getById').resolves(team as any);
 
         const service = new TeamService();
         const result = await service.getTeamById(1);
@@ -33,7 +33,7 @@ describe('TeamService', () => {
     });
 
     it('should return not found when there is no team', async () => {
-        sinon.stub(TeamModel.prototype, 'findById').resolves(null);
+        sinon.stub(TeamModel.prototype, 'getById').resolves(null);
 
         const service = new TeamService();
         const result = await service.getTeamById(1);
@@ -43,7 +43,7 @@ describe('TeamService', () => {
     });
 
     it('should return not found when there are no teams', async () => {
-        sinon.stub(TeamModel.prototype, 'findAll').resolves();
+        sinon.stub(TeamModel.prototype, 'getAll').resolves();
 
         const service = new TeamService();
         const result = await service.getAllTeams();

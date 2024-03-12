@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import JwtService from '../services/JwtService';
+import JwtService from '../utils/JwtService';
 import { tokenMock } from './mocks/user.mock';
 import LoginService from '../services/LoginService';
 

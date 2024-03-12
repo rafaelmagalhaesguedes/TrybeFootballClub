@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 import * as bcrypt from 'bcryptjs';
 import { expect } from 'chai';
-import JwtService from '../services/JwtService';
+import JwtService from '../utils/JwtService';
 import UserModel from '../models/UserModel';
 import LoginService from '../services/LoginService';
 

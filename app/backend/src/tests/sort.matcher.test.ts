@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import MatchesSorter from '../utils/SortMatches';
+import SortMatches from '../utils/SortMatches';
 
 describe('MatchesSorter', () => {
     it('should correctly sort matches', () => {
@@ -9,7 +9,7 @@ describe('MatchesSorter', () => {
           { totalPoints: 2, totalVictories: 0, goalsBalance: 1, goalsFavor: 1, goalsOwn: 0 },
         ];
       
-        const sortedMatches = MatchesSorter.sortMatches(matches as any);
+        const sortedMatches = SortMatches(matches as any);
       
         expect(sortedMatches).deep.equal([
           { totalPoints: 3, totalVictories: 1, goalsBalance: 1, goalsFavor: 2, goalsOwn: 1 },
