@@ -1,6 +1,8 @@
-import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
+//
+import { ILeaderBoard } from '../interfaces/LeaderBoard/ILeaderBoard';
 
 export default class TeamResetter {
+  //
   private teamData: ILeaderBoard;
 
   constructor(teamData: ILeaderBoard) {

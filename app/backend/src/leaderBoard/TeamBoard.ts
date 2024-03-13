@@ -1,5 +1,5 @@
-import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
-import { IMatches } from '../Interfaces/Matches/IMatches';
+import { ILeaderBoard } from '../interfaces/LeaderBoard/ILeaderBoard';
+import { IMatches } from '../interfaces/Matches/IMatches';
 import TeamResetter from '../utils/TeamResetter';
 
 export default class TeamBoard {

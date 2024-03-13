@@ -1,7 +1,7 @@
 import SequelizeMatches from '../database/models/SequelizeMatches';
-import { IMatchesModel } from '../Interfaces/Matches/IMatchesModel';
+import { IMatchesModel } from '../interfaces/Matches/IMatchesModel';
 import SequelizeTeams from '../database/models/SequelizeTeam';
-import { IMatches, IMatchesCreate, IMatchesResults } from '../Interfaces/Matches/IMatches';
+import { IMatches, IMatchesCreate, IMatchesResults } from '../interfaces/Matches/IMatches';
 
 export default class MatchesModel implements IMatchesModel {
   //
@@ -39,17 +39,19 @@ export default class MatchesModel implements IMatchesModel {
     });
   }
 
+  private async teamExists(id: number): Promise<boolean> {
+    const team = await this.teamModel.findOne({ where: { id } });
+    return !!team;
+  }
+
   public async createMatch(match: IMatchesCreate): Promise<IMatches | null> {
     //
-    const homeTeamExists = await this.teamModel.findOne({ where: { id: match.homeTeamId } });
-    if (!homeTeamExists) return null;
-
-    const awayTeamExists = await this.teamModel.findOne({ where: { id: match.awayTeamId } });
-    if (!awayTeamExists) return null;
+    const { homeTeamId, awayTeamId } = match;
+    if (!(await this.teamExists(homeTeamId)) || !(await this.teamExists(awayTeamId))) return null;
 
     const newMatch = await this.matchesModel.create({ ...match, inProgress: true });
+    const { id, homeTeamGoals, awayTeamGoals, inProgress } = newMatch;
 
-    const { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress } = newMatch;
     return { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress };
   }
 
@@ -68,12 +70,9 @@ export default class MatchesModel implements IMatchesModel {
     if (!match) return null;
 
     const { homeTeamGoals, awayTeamGoals } = results;
+    const updatedResults = await match.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    if (!updatedResults) return null;
 
-    const updatedMatchResults = await match.update(
-      { homeTeamGoals, awayTeamGoals },
-      { where: { id } },
-    );
-
-    return updatedMatchResults;
+    return updatedResults;
   }
 }

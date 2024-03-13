@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import TeamData from '../LeaderBoard/TeamData';
+import TeamData from '../leaderBoard/TeamData';
 
 describe('Team Data Tests', () => {
   let teamData: TeamData;

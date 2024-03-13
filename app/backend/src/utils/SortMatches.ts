@@ -1,4 +1,4 @@
-import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
+import { ILeaderBoard } from '../interfaces/LeaderBoard/ILeaderBoard';
 
 class MatchesSorter {
   public static Sort(matches: ILeaderBoard[]) {

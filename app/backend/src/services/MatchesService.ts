@@ -1,8 +1,8 @@
 //
 import MatchesModel from '../models/MatchesModel';
-import { IMatchesModel } from '../Interfaces/Matches/IMatchesModel';
-import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
-import { IMatches, IMatchesCreate, IMatchesResults } from '../Interfaces/Matches/IMatches';
+import { IMatchesModel } from '../interfaces/Matches/IMatchesModel';
+import { ServiceResponse, ServiceMessage } from '../interfaces/ServiceResponse';
+import { IMatches, IMatchesCreate, IMatchesResults } from '../interfaces/Matches/IMatches';
 
 export default class MatchesService {
   // Error messages
@@ -36,15 +36,12 @@ export default class MatchesService {
     }
 
     const newMatch = await this.matchesModel.createMatch(match);
-    if (newMatch === null) { // Team not found
-      return { status: 'NOT_FOUND', data: { message: this.teamNotFound } };
-    }
+    if (newMatch === null) return { status: 'NOT_FOUND', data: { message: this.teamNotFound } };
 
     return { status: 'CREATED', data: newMatch };
   }
 
-  public async updateMatchProgress(id: number):
-  Promise<ServiceResponse<ServiceMessage | IMatches>> {
+  public async updateMatchProgress(id: number): Promise<ServiceResponse<ServiceMessage>> {
     //
     const match = await this.matchesModel.updateMatchProgress(id);
     if (match === null) {
@@ -55,7 +52,7 @@ export default class MatchesService {
   }
 
   public async updateMatchResults(id: number, results: IMatchesResults):
-  Promise<ServiceResponse<ServiceMessage | IMatches>> {
+  Promise<ServiceResponse<ServiceMessage>> {
     //
     const match = await this.matchesModel.updateMatchResults(id, results);
     if (match === null) {

@@ -1,3 +1,4 @@
+//
 import { sign, verify, JwtPayload } from 'jsonwebtoken';
 
 export default class JwtService {

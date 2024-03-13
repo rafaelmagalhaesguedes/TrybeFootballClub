@@ -13,7 +13,8 @@ class AuthMiddleware {
       const payload = JwtService.verifyToken(token);
       res.locals.user = payload;
     } catch (error) {
-      console.log('Invalid Token!', error);
+      const _error = error as Error;
+      console.log('Error validate token!', _error.message);
       return res.status(401).json({ message: 'Token must be a valid token' });
     }
 

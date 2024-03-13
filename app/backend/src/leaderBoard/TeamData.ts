@@ -1,4 +1,4 @@
-import { IMatches } from '../Interfaces/Matches/IMatches';
+import { IMatches } from '../interfaces/Matches/IMatches';
 import TeamBoard from './TeamBoard';
 
 export default class TeamData extends TeamBoard {

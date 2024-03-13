@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 import { NextFunction, Request, Response } from 'express';
-import IUser from '../Interfaces/User/IUser';
+import IUser from '../interfaces/User/IUser';
 
 class LoginMiddleware {
   //

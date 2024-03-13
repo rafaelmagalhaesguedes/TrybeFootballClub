@@ -1,7 +1,7 @@
 //
-import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
-import { ITeamModel } from '../Interfaces/Team/ITeamModel';
-import { ITeam } from '../Interfaces/Team/ITeam';
+import { ServiceResponse, ServiceMessage } from '../interfaces/ServiceResponse';
+import { ITeamModel } from '../interfaces/Team/ITeamModel';
+import { ITeam } from '../interfaces/Team/ITeam';
 import TeamModel from '../models/TeamModel';
 
 export default class TeamService {
