@@ -1,10 +1,10 @@
 //
-import { ILeaderBoardModel } from '../Interfaces/LeaderBoard/ILeaderBoardModel';
-import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
+import { ILeaderBoardModel } from '../interfaces/LeaderBoard/ILeaderBoardModel';
+import { ILeaderBoard } from '../interfaces/LeaderBoard/ILeaderBoard';
 import SequelizeMatches from '../database/models/SequelizeMatches';
 import SequelizeTeam from '../database/models/SequelizeTeam';
-import { ITeam } from '../Interfaces/Team/ITeam';
-import TeamData from '../LeaderBoard/TeamData';
+import { ITeam } from '../interfaces/Team/ITeam';
+import TeamData from '../leaderBoard/TeamData';
 import MatchesModel from './MatchesModel';
 
 export default class LeaderBoardModel implements ILeaderBoardModel {

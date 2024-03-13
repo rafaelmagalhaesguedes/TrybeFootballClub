@@ -1,47 +1,56 @@
-//
-import { ServiceMessage, ServiceResponse } from '../Interfaces/ServiceResponse';
-import { ILeaderBoard } from '../Interfaces/LeaderBoard/ILeaderBoard';
+import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
+import { ILeaderBoardModel } from '../interfaces/LeaderBoard/ILeaderBoardModel';
+import { ILeaderBoard } from '../interfaces/LeaderBoard/ILeaderBoard';
 import LeaderBoardModel from '../models/LeaderBoardModel';
 import Sort from '../utils/SortMatches';
 
-export default class LeaderBoardService extends LeaderBoardModel {
+export default class LeaderBoardService {
   //
+  private errorMessage = 'Failed to get leader board data. Please try again later.';
+
+  constructor(
+    private leaderModel: ILeaderBoardModel = new LeaderBoardModel(),
+  ) {}
+
   public async getLeaderBoard(): Promise<ServiceResponse<ServiceMessage | ILeaderBoard[]>> {
     try {
-      const teams = await this.getHomeAndAwayTeams();
-      const teamStatsPromises = teams.map((team) => this.getTeamStats(team));
+      const teams = await this.leaderModel.getHomeAndAwayTeams();
+      const teamStatsPromises = teams.map((team) => this.leaderModel.getTeamStats(team));
       const teamStats = await Promise.all(teamStatsPromises);
       const orderedTeams = Sort(teamStats);
       return { status: 'SUCCESSFUL', data: orderedTeams };
     } catch (error) {
-      const _error = error as Error;
-      return { status: 'NOT_FOUND', data: { message: `LeaderBoard not found: ${_error.message}` } };
+      return this.handleError(error, 'getLeaderBoard');
     }
   }
 
-  public async getHomeLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
+  public async getHomeLeaderBoard(): Promise<ServiceResponse<ServiceMessage | ILeaderBoard[]>> {
     try {
-      const teams = await this.getHomeAndAwayTeams();
-      const homeTeamStatsPromises = teams.map((team) => this.getHomeTeamStats(team));
+      const teams = await this.leaderModel.getHomeAndAwayTeams();
+      const homeTeamStatsPromises = teams.map((team) => this.leaderModel.getHomeTeamStats(team));
       const homeTeamStats = await Promise.all(homeTeamStatsPromises);
       const orderedHomeTeams = Sort(homeTeamStats);
       return { status: 'SUCCESSFUL', data: orderedHomeTeams };
     } catch (error) {
-      const _error = error as Error;
-      return { status: 'NOT_FOUND', data: { message: `LeaderBoard not found: ${_error.message}` } };
+      return this.handleError(error, 'getHomeLeaderBoard');
     }
   }
 
-  public async getAwayLeaderBoard(): Promise<ServiceResponse<ILeaderBoard[]>> {
+  public async getAwayLeaderBoard(): Promise<ServiceResponse<ServiceMessage | ILeaderBoard[]>> {
     try {
-      const teams = await this.getHomeAndAwayTeams();
-      const awayTeamStatsPromises = teams.map((team) => this.getAwayTeamStats(team));
+      const teams = await this.leaderModel.getHomeAndAwayTeams();
+      const awayTeamStatsPromises = teams.map((team) => this.leaderModel.getAwayTeamStats(team));
       const awayTeamStats = await Promise.all(awayTeamStatsPromises);
       const orderedAwayTeams = Sort(awayTeamStats);
       return { status: 'SUCCESSFUL', data: orderedAwayTeams };
     } catch (error) {
-      const _error = error as Error;
-      return { status: 'NOT_FOUND', data: { message: `LeaderBoard not found: ${_error.message}` } };
+      return this.handleError(error, 'getAwayLeaderBoard');
     }
+  }
+
+  private handleError(error: unknown, methodName: string): ServiceResponse<ServiceMessage> {
+    const _error = error as Error;
+    console.log(`Error in ${methodName}: `, _error.message);
+    return { status: 'INTERNAL_ERROR', data: { message: this.errorMessage } };
   }
 }
