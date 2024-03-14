@@ -1,4 +1,4 @@
-# Trybe Football Club - API ⚽
+# Trybe Football Club ⚽
 
 Bem-vindo à API do Trybe Football Club! Esta API fornece informações sobre partidas, times e classificações de futebol. Foi desenvolvida utilizando tecnologias modernas e boas práticas de desenvolvimento de software, com o objetivo de oferecer uma experiência de alta qualidade e confiabilidade.
 
