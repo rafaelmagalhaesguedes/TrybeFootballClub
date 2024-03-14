@@ -1,6 +1,6 @@
 # Trybe Football Club ⚽
 
-Bem-vindo à API do Trybe Football Club! Esta API fornece informações sobre partidas, times e classificações de futebol. Foi desenvolvida utilizando tecnologias modernas e boas práticas de desenvolvimento de software, com o objetivo de oferecer uma experiência de alta qualidade e confiabilidade.
+Bem-vindo à API da Trybe Football Club! Esta API fornece informações sobre partidas, times e classificações de futebol. Foi desenvolvida utilizando tecnologias modernas e boas práticas de desenvolvimento de software, com o objetivo de oferecer uma experiência de alta qualidade e confiabilidade.
 
 __Link do Deploy__: [Trybe Football Club](https://deploy-project-fcmnaw2el-rafaelmagalhaesguedes.vercel.app/leaderboard)
 
